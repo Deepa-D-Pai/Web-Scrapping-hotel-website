@@ -1,0 +1,15 @@
+import requests
+import pandas as pd
+from bs4 import BeautifulSoup
+page=requests.get('https://www.makemytrip.com/hotels/hotel-listing/?checkin=04012020&checkout=04022020&locusId=CTXDB&locusType=city&city=CTXDB&country=IN&searchText=Hubli%2C%20India&roomStayQualifier=2e0e&_uCurrency=INR&reference=hotel&type=city')
+soup=BeautifulSoup(page.content,'html.parser')
+cost=[]
+hotel=[]
+for item in soup.findAll('div', attrs={'class':'makeFlex spaceBetween'}):
+    name=item.find('p', attrs={'class':'latoBlack font22 blackText appendBottom12'})
+    hotel.append(name.text)
+for item in soup.findAll('div', attrs={'class':'padding20 makeFlex column'}):
+    price=item.find('p', attrs={'class':'latoBlack font26 blackText appendBottom5'})
+    cost.append(price.text)
+excel = pd.DataFrame({'Hotel Name':hotel,'Cost':cost}) 
+excel.to_csv('Hotels.csv', index=False, encoding='utf-8')
