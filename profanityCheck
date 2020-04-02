@@ -1,0 +1,4 @@
+from better_profanity import profanity
+profanity.load_cesor_words()
+sen=input("enter a sentence:")
+print(profanity.censor(sen))
